@@ -17,7 +17,7 @@ interface UseFormValidationReturn<T> {
   formData: T;
   isSubmitting: Ref<boolean>;
   validate: () => Promise<boolean>;
-  submit: () => Promise<void>;
+  submit: () => Promise<T>; // 修改为返回Promise<T>
   reset: () => void;
   setFieldValue: (field: keyof T, value: T[keyof T]) => void;
   getFieldValue: (field: keyof T) => T[keyof T];
@@ -34,8 +34,7 @@ export function useForm<T extends object>(
 
   const validate = async (): Promise<boolean> => {
     if (!formRef.value) {
-      console.warn('Form instance is not initialized');
-      return false;
+      throw new Error('Form instance is not initialized');
     }
 
     try {
@@ -46,32 +45,44 @@ export function useForm<T extends object>(
     }
   };
 
-  const submit = async (): Promise<void> => {
-    if (isSubmitting.value) return;
+  // 修改submit为返回Promise<T>
+  const submit = async (): Promise<T> => {
+    if (isSubmitting.value) {
+      throw new Error('Form is already submitting');
+    }
     if (!formRef.value) {
-      console.error('Form instance is required');
-      return;
+      throw new Error('Form instance is required');
     }
 
     try {
       isSubmitting.value = true;
+      const formValue = { ...toValue(formData) };
 
+      // 执行前置提交检查
       if (beforeSubmit) {
-        const canSubmit = await beforeSubmit({ ...toValue(formData) });
+        const canSubmit = await beforeSubmit(formValue);
         if (!canSubmit) {
-          isSubmitting.value = false;
-          return;
+          throw new Error('Submit prevented by beforeSubmit');
         }
       }
 
+      // 执行表单验证
       await formRef.value.validate();
+
+      // 触发成功回调
       if (onSuccess) {
-        onSuccess({ ...toValue(formData) });
+        onSuccess(formValue);
       }
+
+      // 返回表单数据
+      return formValue;
     } catch (error) {
+      // 触发错误回调
       if (onError) {
         onError(error instanceof Error ? error : new Error(String(error)));
       }
+      // 重新抛出错误供Promise捕获
+      throw error;
     } finally {
       isSubmitting.value = false;
     }
@@ -81,7 +92,6 @@ export function useForm<T extends object>(
     if (!formRef.value) return;
 
     formRef.value.resetFields();
-    // 关键修复：使用as断言明确键的类型兼容性
     Object.keys(initialData).forEach((key) => {
       formData[key as keyof T] = initialData[key as keyof T];
     });
@@ -98,7 +108,6 @@ export function useForm<T extends object>(
   watch(
     () => initialData,
     (newData) => {
-      // 关键修复：使用as断言明确键的类型兼容性
       Object.keys(newData).forEach((key) => {
         formData[key as keyof T] = newData[key as keyof T];
       });

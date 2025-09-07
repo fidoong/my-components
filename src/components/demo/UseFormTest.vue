@@ -31,12 +31,8 @@
         <el-input v-model="formData.password" type="password" placeholder="请设置密码" />
       </el-form-item>
 
-      <el-form-item label="确认密码" prop="confirmPassword">
-        <el-input v-model="formData.confirmPassword" type="password" placeholder="请再次输入密码" />
-      </el-form-item>
-
       <el-form-item>
-        <el-button type="primary" @click="submit">注册</el-button>
+        <el-button type="primary" :loading="isSubmitting" @click="handleSubmit">注册</el-button>
         <el-button @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
@@ -49,24 +45,10 @@ import type { FormInstance } from 'element-plus';
 import {useFormRules} from "@/components/form/src/useFormRules.ts";
 import {useForm} from "@/components/form/src/useForm.ts";
 
-// 创建规则容器实例
-const rules = useFormRules();
-
-const initialData = {
-  username: '',
-  email: '',
-  phone: '',
-  age: '',
-  height: '',
-  password: '',
-  confirmPassword: ''
-}
-
-export type UserType = typeof initialData;
-
 // 表单引用
 const formRef = ref<FormInstance>();
-
+// 表单规则
+const rules = useFormRules();
 const formRules = reactive({
   // 使用快捷规则
   username: rules.username()
@@ -111,7 +93,6 @@ const formRules = reactive({
     .and()
     .weak(8, '密码长度不能少于8位')
     .and()
-    .strong('密码必须包含大小写字母、数字和特殊字符')
     .trigger('blur')
     .build(),
 
@@ -122,8 +103,21 @@ const formRules = reactive({
     .trigger('blur')
     .build()
 });
+// 初始数据
+const initialData = {
+  username: '',
+  email: '',
+  phone: '',
+  age: '',
+  height: '',
+  password: '',
+  confirmPassword: ''
+}
+
+export type UserType = typeof initialData;
 
 const {
+  isSubmitting,
   formData,
   submit,
   reset,
@@ -133,7 +127,11 @@ const {
   formRef
 })
 
-
+const handleSubmit = () => {
+  submit().then(res => {
+    console.log(res)
+  })
+}
 
 </script>
 

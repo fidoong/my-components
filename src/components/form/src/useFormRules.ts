@@ -205,17 +205,6 @@ export class PasswordRuleBuilder extends RuleBuilder {
     return this.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/, message);
   }
 
-  /**
-   * 强密码验证（包含大小写字母、数字和特殊字符）
-   * @param message 错误提示信息
-   * @returns PasswordRuleBuilder 实例
-   */
-  strong(message: string = '密码必须包含大小写字母、数字和特殊字符'): this {
-    return this.pattern(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
-      message
-    );
-  }
 
   /**
    * 密码确认验证
