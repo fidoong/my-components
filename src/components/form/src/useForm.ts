@@ -26,7 +26,7 @@ interface UseFormValidationReturn<T> {
 export function useForm<T extends object>(
   options: UseFormValidationOptions<T>
 ): UseFormValidationReturn<T> {
-  
+
   const { initialData, formRef, beforeSubmit, onSuccess, onError } = options;
 
   // 表单数据

@@ -104,15 +104,15 @@ const formRules = reactive({
     .build()
 });
 // 初始数据
-const initialData = {
+const initialData = reactive({
   username: '',
   email: '',
-  phone: '',
+  phone: '13219731161',
   age: '',
   height: '',
   password: '',
   confirmPassword: ''
-}
+})
 
 export type UserType = typeof initialData;
 
