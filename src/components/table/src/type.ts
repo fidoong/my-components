@@ -13,12 +13,7 @@ export interface PaginationInfo {
 
 export type TableColumnConfig<T extends DefaultRow = DefaultRow> = Partial<TableColumnCtx> & {
   prop?: keyof T;
-  render?: (
-    row: T,
-    index: number,
-    column: TableColumnConfig<T>,
-    pagination?: PaginationInfo
-  ) => VNode | VNode[] | string | null;
+  render?: (...arg: any[]) => VNode | VNode[] | string | null;
   children?: TableColumnConfig<T>[];
 } ;
 

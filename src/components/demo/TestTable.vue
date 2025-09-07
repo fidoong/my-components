@@ -74,7 +74,7 @@ const columns = [
     label: '状态',
     width: 120,
     align: 'center',
-    render: (row: TableItem) => {
+    render: ({row}:{row:TableItem}) => {
       return row.status === 1
         ? <ElTag type="success">启用</ElTag>
         : <ElTag type="danger">禁用</ElTag>;
@@ -95,7 +95,7 @@ const columns = [
     label: '操作',
     width: 200,
     align: 'center',
-    render: (row: TableItem) => {
+    render: ({row}: {row:TableItem}) => {
       return (
         <div class="operation-buttons">
           <ElButton
@@ -108,7 +108,7 @@ const columns = [
           <ElButton
             size="small"
             type="danger"
-            onClick={() => handleDelete(row.id)}
+            onClick={() => handleDelete(row)}
           >
             删除
           </ElButton>
@@ -168,9 +168,9 @@ const handleEdit = (row: TableItem) => {
 };
 
 // 删除事件
-const handleDelete = (id: number) => {
-  console.log('删除ID:', id);
-  ElMessage.warning(`确认删除ID为 ${id} 的记录`);
+const handleDelete = (row: TableItem) => {
+  console.log('删除ID:', row);
+  ElMessage.warning(`确认删除ID为 ${row} 的记录`);
   // 实际项目中这里会调用删除接口，然后刷新表格
   // tableRef.value?.refresh();
 };
