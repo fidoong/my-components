@@ -1,6 +1,4 @@
 <template>
-  <UseFormTest/>
-  <br/>
   <div class="table-demo-container">
     <div class="query-form">
       <el-input
@@ -10,6 +8,7 @@
       />
       <el-button type="primary" @click="handleSearch">搜索</el-button>
       <el-button @click="handleReset">重置</el-button>
+      <el-button @click="loginModal.open()">登录</el-button>
     </div>
     <base-table
       ref="tableRef"
@@ -35,8 +34,7 @@ import BaseTable from "@/components/table/src/BaseTable.tsx";
 import {ElMessage, ElTag, ElButton} from 'element-plus';
 import type {BaseTableProxy, FetchParams, TableColumnConfig} from "@/components/table/src/type.ts";
 import {useProductEditorModal} from "@/components/demo/productModal.ts";
-import UseFormTest from "@/components/demo/UseFormTest.vue";
-
+import {useLoginModal} from "@/components/demo/LoginModal.ts";
 // 表格数据类型定义
 interface TableItem {
   id: number;
@@ -46,6 +44,7 @@ interface TableItem {
   operator: string;
 }
 const productModal = useProductEditorModal();
+const loginModal = useLoginModal();
 
 const queryParams = ref<FetchParams>({
   pageNum: 1,

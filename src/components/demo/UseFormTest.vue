@@ -1,42 +1,35 @@
 <template>
-  <el-card title="用户注册" class="registration-form">
-    <el-form
-      ref="formRef"
-      :model="formData"
-      :rules="formRules"
-      label-width="140px"
-      size="default"
-    >
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="formData.username" placeholder="请输入用户名" />
-      </el-form-item>
+  <el-form
+    ref="formRef"
+    :model="formData"
+    :rules="formRules"
+    label-width="140px"
+    size="default"
+  >
+    <el-form-item label="用户名" prop="username">
+      <el-input v-model="formData.username" placeholder="请输入用户名" />
+    </el-form-item>
 
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="formData.email" placeholder="请输入邮箱地址" />
-      </el-form-item>
+    <el-form-item label="邮箱" prop="email">
+      <el-input v-model="formData.email" placeholder="请输入邮箱地址" />
+    </el-form-item>
 
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model="formData.phone" placeholder="请输入手机号" />
-      </el-form-item>
+    <el-form-item label="手机号" prop="phone">
+      <el-input v-model="formData.phone" placeholder="请输入手机号" />
+    </el-form-item>
 
-      <el-form-item label="年龄" prop="age">
-        <el-input v-model.number="formData.age" placeholder="请输入年龄" />
-      </el-form-item>
+    <el-form-item label="年龄" prop="age">
+      <el-input v-model.number="formData.age" placeholder="请输入年龄" />
+    </el-form-item>
 
-      <el-form-item label="身高(米)" prop="height">
-        <el-input v-model="formData.height" placeholder="请输入身高，保留两位小数" />
-      </el-form-item>
+    <el-form-item label="身高(米)" prop="height">
+      <el-input v-model="formData.height" placeholder="请输入身高，保留两位小数" />
+    </el-form-item>
 
-      <el-form-item label="设置密码" prop="password">
-        <el-input v-model="formData.password" type="password" placeholder="请设置密码" />
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" :loading="isSubmitting" @click="handleSubmit">注册</el-button>
-        <el-button @click="reset">重置</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+    <el-form-item label="设置密码" prop="password">
+      <el-input v-model="formData.password" type="password" placeholder="请设置密码" />
+    </el-form-item>
+  </el-form>
 </template>
 
 <script setup lang="ts">
@@ -117,28 +110,25 @@ const initialData = reactive({
 export type UserType = typeof initialData;
 
 const {
-  isSubmitting,
   formData,
   submit,
-  reset,
 } = useForm<UserType>({
   initialData,
   rules: formRules,
   formRef
 })
 
-const handleSubmit = () => {
-  submit().then(res => {
-    console.log(res)
-  })
+const handleSubmit = async () => {
+  const res = await submit()
+  console.log(res)
+  return res
 }
+
+defineExpose({
+  handleSubmit
+})
 
 </script>
 
 <style scoped>
-.registration-form {
-  max-width: 700px;
-  margin: 30px auto;
-  padding: 20px;
-}
 </style>
