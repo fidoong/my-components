@@ -26,6 +26,7 @@ interface UseFormValidationReturn<T> {
 export function useForm<T extends object>(
   options: UseFormValidationOptions<T>
 ): UseFormValidationReturn<T> {
+  
   const { initialData, formRef, beforeSubmit, onSuccess, onError } = options;
 
   // 表单数据
@@ -90,7 +91,6 @@ export function useForm<T extends object>(
 
   const reset = (): void => {
     if (!formRef.value) return;
-
     formRef.value.resetFields();
     Object.keys(initialData).forEach((key) => {
       formData[key as keyof T] = initialData[key as keyof T];
