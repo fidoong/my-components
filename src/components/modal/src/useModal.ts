@@ -187,7 +187,7 @@ export function useModal<T = ComponentPublicInstance, P = Record<string, unknown
         close();
       } catch (error) {
         footerButtonProps.loading = false;
-        console.error('确认操作失败:', error);
+        throw error;
       }
     } else {
       close();
@@ -200,7 +200,7 @@ export function useModal<T = ComponentPublicInstance, P = Record<string, unknown
         await cancelCallback.value();
         close();
       } catch (error) {
-        console.error('取消操作失败:', error);
+        throw error;
       }
     } else {
       close();
