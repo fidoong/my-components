@@ -8,7 +8,7 @@ export const useLoginModal = () => {
   const modal = getModel<InstanceType<typeof UseFormTest>, null>({
     idx,
     width: '800px',
-    title: '测试弹窗33',
+    title: '登录信息',
     showClose: false,
     draggable: true,
     content: UseFormTest
