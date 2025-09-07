@@ -10,9 +10,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     DemoTable: typeof import('./src/components/demo/DemoTable.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCard: typeof import('element-plus/es')['ElCard']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElFormItem__help: typeof import('element-plus/es')['ElFormItem__help']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElSelect: typeof import('element-plus/es')['ElSelect']
@@ -24,5 +26,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TestTable: typeof import('./src/components/demo/TestTable.vue')['default']
+    UseFormTest: typeof import('./src/components/demo/UseFormTest.vue')['default']
   }
 }

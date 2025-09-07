@@ -1,4 +1,6 @@
 <template>
+  <UseFormTest/>
+  <br/>
   <div class="table-demo-container">
     <div class="query-form">
       <el-input
@@ -21,7 +23,7 @@
         }
       }"
       :table-props="{
-        border: true,
+        maxHeight: '400px'
       }"
     />
   </div>
@@ -33,6 +35,7 @@ import BaseTable from "@/components/table/src/BaseTable.tsx";
 import {ElMessage, ElTag, ElButton} from 'element-plus';
 import type {BaseTableProxy, FetchParams, TableColumnConfig} from "@/components/table/src/type.ts";
 import {useProductEditorModal} from "@/components/demo/productModal.ts";
+import UseFormTest from "@/components/demo/UseFormTest.vue";
 
 // 表格数据类型定义
 interface TableItem {
