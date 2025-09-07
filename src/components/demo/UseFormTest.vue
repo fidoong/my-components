@@ -36,37 +36,37 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="handleSubmit">注册</el-button>
-        <el-button @click="handleReset">重置</el-button>
+        <el-button type="primary" @click="submit">注册</el-button>
+        <el-button @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
   </el-card>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue';
+import { ref, reactive } from 'vue';
 import type { FormInstance } from 'element-plus';
-import { ElMessage } from 'element-plus';
 import {useFormRules} from "@/components/form/src/useFormRules.ts";
+import {useForm} from "@/components/form/src/useForm.ts";
 
 // 创建规则容器实例
 const rules = useFormRules();
 
-// 表单数据
-const formData = reactive({
+const initialData = {
   username: '',
   email: '',
   phone: '',
-  age: null as number | null,
-  height: null as number | null,
+  age: '',
+  height: '',
   password: '',
   confirmPassword: ''
-});
+}
+
+export type UserType = typeof initialData;
 
 // 表单引用
 const formRef = ref<FormInstance>();
 
-// 定义表单验证规则
 const formRules = reactive({
   // 使用快捷规则
   username: rules.username()
@@ -119,40 +119,22 @@ const formRules = reactive({
   confirmPassword: rules.password
     .required('请确认密码')
     .and()
-    .confirm(formData.password)
     .trigger('blur')
     .build()
 });
 
-// 监听密码变化，更新确认密码验证
-watch(
-  () => formData.password,
-  () => {
-    if (formRef.value) {
-      formRef.value.validateField('confirmPassword');
-    }
-  }
-);
+const {
+  formData,
+  submit,
+  reset,
+} = useForm<UserType>({
+  initialData,
+  rules: formRules,
+  formRef
+})
 
-// 提交表单
-const handleSubmit = async () => {
-  if (!formRef.value) return;
 
-  try {
-    await formRef.value.validate();
-    console.log('表单验证通过，提交数据:', formData);
-    ElMessage.success('注册成功！');
-  } catch (error) {
-    console.log('表单验证失败:', error);
-    ElMessage.error('请检查并修正表单中的错误');
-  }
-};
 
-// 重置表单
-const handleReset = () => {
-  if (!formRef.value) return;
-  formRef.value.resetFields();
-};
 </script>
 
 <style scoped>
