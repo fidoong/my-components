@@ -71,7 +71,7 @@ const BaseTable = defineComponent(
 
       const queryParams = useModel(props, 'queryParams');
 
-      const total = useModel(props,'total')
+      const total = useModel(props, 'total')
 
       const fetchData = async () => {
         if (!props.fetchApi) return;
@@ -83,6 +83,7 @@ const BaseTable = defineComponent(
           };
 
           const response = await props.fetchApi(params);
+
           data.value = response.list;
           total.value = response.total;
 
@@ -95,37 +96,29 @@ const BaseTable = defineComponent(
       };
 
       const reLoadData = async () => {
-        queryParams.value = {
-          ...queryParams.value,
-          pageNum: 1,
-        }
-       await fetchData()
+
+        queryParams.value.pageNum = 1;
+
+        await fetchData()
       }
-      const handlePaginationChange = async (pageNum: number, pageSize: number) => {
-        if (pageNum < 1) pageNum = 1;
-        if (pageSize < 1) pageSize = queryParams.value?.pageSize || 1;
 
-        queryParams.value = {
-          ...queryParams.value,
-          pageNum,
-          pageSize
-        };
-
-        ctx.emit('pagination-change', {pageNum, pageSize});
-       await fetchData();
+      const handleCurrentChange = async (pageNum: number) => {
+        queryParams.value.pageNum = pageNum;
+        await fetchData();
       };
 
       // 监听fetchApi变化
       watch(
         () => props.fetchApi,
         async () => {
-         await reLoadData();
+          await reLoadData();
         }
       );
 
 
-      const handleSizeChange = () => {
-        console.log('handleSizeChange', handleSizeChange)
+      const handleSizeChange = async (val: number) => {
+        queryParams.value.pageSize = val;
+        await fetchData();
       }
 
       // 递归渲染列
@@ -206,7 +199,7 @@ const BaseTable = defineComponent(
 
       ctx.expose(createTableProxy());
 
-      onMounted(async ()=> {
+      onMounted(async () => {
         await reLoadData()
       })
 
@@ -225,11 +218,14 @@ const BaseTable = defineComponent(
               <div class="base-table-pagination">
                 <ElPagination
                   total={total.value}
+                  currentPage={queryParams.value?.pageNum}
                   pageSizes={props.config.pagination?.pageSizes || [10, 20, 50, 100]}
                   layout={props.config.pagination?.layout || 'total, sizes, prev, pager, next, jumper'}
                   {...props.config.pagination}
-                  on-Size-change={handleSizeChange}
-                  on-Current-change={handlePaginationChange}
+                  {...{
+                    'onSizeChange': handleSizeChange,
+                    'onCurrentChange': handleCurrentChange
+                  }}
                 />
               </div>
             )}

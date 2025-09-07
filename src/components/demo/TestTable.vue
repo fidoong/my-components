@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="tsx">
-import {onMounted, ref} from 'vue';
+import {ref} from 'vue';
 import BaseTable from "@/components/table/src/BaseTable.tsx";
 import {ElMessage, ElTag, ElButton} from 'element-plus';
 import type {BaseTableProxy, FetchParams, TableColumnConfig} from "@/components/table/src/type.ts";
@@ -44,16 +44,13 @@ interface TableItem {
 }
 const productModal = useProductEditorModal();
 
-const initParams = {
+const queryParams = ref<FetchParams>({
   pageNum: 1,
   pageSize:10,
   params: {
     name: '',
     status: undefined
   }
-}
-const queryParams = ref<FetchParams>({
-  ...initParams
 });
 
 const tableData = ref([])
@@ -150,7 +147,6 @@ const fetchTableData = async (params: FetchParams) => {
 
 // 搜索事件
 const handleSearch = () => {
-  // 调用表格的重置刷新方法
   tableRef.value?.reLoadData();
 };
 
@@ -179,9 +175,6 @@ const handleDelete = (id: number) => {
 </script>
 
 <style scoped>
-.table-demo-container {
-  padding: 20px;
-}
 
 .query-form {
   margin-bottom: 16px;
