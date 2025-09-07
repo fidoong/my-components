@@ -19,7 +19,7 @@ import type {
   BaseTableProxy
 } from './type.ts';
 import type {DefaultRow} from "element-plus/es/components/table/src/table/defaults";
-
+import './style.scss';
 
 
 const BaseTable = defineComponent(
