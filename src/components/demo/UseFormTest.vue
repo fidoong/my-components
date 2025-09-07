@@ -96,6 +96,8 @@ const formRules = reactive({
     .trigger('blur')
     .build()
 });
+
+console.log('formRules',formRules)
 // 初始数据
 const initialData = reactive({
   username: '',
