@@ -35,8 +35,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import type { FormInstance } from 'element-plus';
-import {useFormRules} from "@/components/form/src/useFormRules.ts";
 import {useForm} from "@/components/form/src/useForm.ts";
+import {useFormRules} from "@/composables/form-rules";
 
 // 表单引用
 const formRef = ref<FormInstance>();
@@ -44,30 +44,16 @@ const formRef = ref<FormInstance>();
 const rules = useFormRules();
 const formRules = reactive({
   // 使用快捷规则
-  username: rules.username()
-    .trigger('blur')
-    .build(),
-
+  username: rules.username().build(),
   // 使用邮箱快捷规则
-  email: rules.email()
-    .trigger('blur')
-    .build(),
-
+  email: rules.email().build(),
   // 使用手机号快捷规则
-  phone: rules.phone()
-    .trigger('blur')
-    .build(),
-
+  phone: rules.phone().build(),
   // 使用数字规则
   age: rules.number
-    .required('年龄不能为空')
-    .and()
-    .positiveInteger('年龄必须是正整数')
-    .and()
-    .range(18, 120, '年龄必须在18-120岁之间')
-    .trigger('blur')
-    .build(),
-
+    .required('年龄不能为空').and()
+    .positiveInteger('年龄必须是正整数').and()
+    .range(18, 120, '年龄必须在18-120岁之间').trigger('blur').build(),
   // 组合数字规则
   height: rules.combine(
     rules.number

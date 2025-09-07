@@ -28,7 +28,7 @@
 import {ref, defineProps, defineExpose, type ExtractPropTypes, reactive} from 'vue';
 import { type FormInstance } from 'element-plus';
 import {useForm} from "@/components/form/src/useForm.ts";
-import {useFormRules} from "@/components/form/src/useFormRules.ts";
+import {useFormRules} from "@/composables/form-rules";
 
 export type Product = {
   id?: number;
